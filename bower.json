@@ -1,0 +1,21 @@
+{
+  "name": "mean-magento",
+  "description": "Mean stack with Magento",
+  "main": "server.js",
+  "authors": [
+    "Sudip Chatterjee <schatterjee4@sapient.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
