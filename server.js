@@ -3,6 +3,7 @@ var express = require('express'),
     errorhandler = require('errorhandler'),
     routes = require('./server/routes'),
     craetejobApi = require('./server/routes/craetejob.api'),
+    homeApi = require('./server/routes/home.api'),
     DB = require('./backend/accessDB'),
     app = express();
 
@@ -24,6 +25,7 @@ app.get('/', routes.index);
 // JSON API
 var baseUrl = '/api/dataservice/';
 app.get(baseUrl + 'createjob', craetejobApi.craetejob);
+app.get(baseUrl + 'home', homeApi.listjob);
 
 // Creating a connection to MongoDB
 DB.startup();

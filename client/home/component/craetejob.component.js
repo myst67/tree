@@ -37,19 +37,20 @@ var CraetejobComponent = (function () {
         return null;
     };
     CraetejobComponent.prototype.submitJobForm = function (createjobForm) {
+        var _this = this;
         if (createjobForm.valid) {
             console.log(createjobForm.value);
             this.subscription = this._createformservice.saveJob(createjobForm.value)
                 .subscribe(function (response) {
-                // console.log('res from api ==== ')
-                // console.log(response);
+                console.log('res from api ==== ');
+                console.log(response);
+                _this.msg = 'Thank you for craeting Job. Job id is:' + response;
             });
         }
         else {
-            this.validationMessage = "Form Is Not Valid";
+            this.msg = "Form Is Not Valid";
         }
-        console.log(this.validationMessage);
-        return false;
+        this.createJobForm();
     };
     return CraetejobComponent;
 }());

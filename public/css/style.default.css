@@ -19,7 +19,7 @@ h1 {
   font-size: 40px;
 }
 #top {
-  background: #555555;
+  background: #fff;
   padding: 10px 0;
 }
 #top .offer {
@@ -58,7 +58,7 @@ h1 {
   display: inline-block;
 }
 #top ul.menu > li a {
-  color: #eeeeee;
+  color: #000;
 }
 #top ul.menu > li + li:before {
   content: "|\00a0";
@@ -1142,7 +1142,7 @@ h1 {
   padding: 10px 15px;
   font-size: 18px;
   line-height: 20px;
-  height: 70px;
+  height: 60px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {

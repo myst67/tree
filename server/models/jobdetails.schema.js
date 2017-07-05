@@ -21,6 +21,9 @@ var jobdetailsSchema = new Schema({
     },
     recruiter_ph: {
       type : String, required: true, trim: true
+    },
+    craete_date: {
+      type : String, required: true, trim: true
     }
 });
 module.exports = mongoose.model('jobdetails', jobdetailsSchema);

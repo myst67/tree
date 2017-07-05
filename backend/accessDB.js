@@ -4,6 +4,7 @@ var util = require('util'),
     Schema = mongoose.Schema,
     dbConfig = require('./configLoader').databaseConfig,
     jobdetails = require('../server/models/jobdetails.schema'),
+   //getJobList = require('../server/models/joblist.schema'),
     connectionString = 'mongodb://' + dbConfig.host + '/' + dbConfig.database,
     connection = null;
 
@@ -157,6 +158,9 @@ module.exports = {
 */
 
     insertJobDetails: function(jobData, callback) {
+
+        var datetime = new Date().toLocaleDateString();
+       
         console.log('beofre delare scghema ==== ');
         jobdetailsSchema = new jobdetails({
             id: jobData.id, 
@@ -165,9 +169,9 @@ module.exports = {
             company: jobData.company,
             location: jobData.location,
             recruiter_name : jobData.recruiter_name,
-            recruiter_ph: jobData.recruiter_ph
+            recruiter_ph: jobData.recruiter_ph,
+            craete_date: datetime
         });
-       // jobdetailsSchema.jobdetails.push(jobData);
         jobdetailsSchema.save(function(err,data) {
             if (err) {
                 console.log('Error while saving jobdetailsSchema: ' + err);
@@ -177,6 +181,20 @@ module.exports = {
             }
         });
         callback(null, jobdetailsSchema.id);
+    },
+
+    
+    getJobList: function(err, callback) {
+        jobdetails.find({},function(err, jobData) {
+            if (err) {
+                console.log("Error fething Menu: " + err);
+            } else {
+                callback(null, jobData);
+                // console.log("inside mongo db ===");
+                // console.log(jobData);
+            }
+
+        });
     },
 
 

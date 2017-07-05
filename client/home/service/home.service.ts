@@ -7,9 +7,9 @@ export class HomeService{
     constructor(private _http: Http){
     }
 
-    getHomeContent(homeCenterContentId : any){
+    getHomeContent(){
         
-        return this._http.get('api/dataservice/cms?id='+homeCenterContentId)
+        return this._http.get('api/dataservice/home')
                     .map(res=>res.json());
     }
 }

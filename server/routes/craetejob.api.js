@@ -20,15 +20,13 @@ exports.craetejob = function (req, res) {
 
     db.insertJobDetails(jobDetails, function (err, jd){
         if (err) {
-
-           
-           success= false;
+           res.json('error to saving data ... '+err);
         }
 
-        console.log('error getting====');
+        console.log('after save mongodb====');
         console.log(jd);
-
+        res.json(jd);
     });
 
-    res.success;
+    
 };

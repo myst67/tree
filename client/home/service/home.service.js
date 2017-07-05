@@ -15,8 +15,8 @@ var HomeService = (function () {
     function HomeService(_http) {
         this._http = _http;
     }
-    HomeService.prototype.getHomeContent = function (homeCenterContentId) {
-        return this._http.get('api/dataservice/cms?id=' + homeCenterContentId)
+    HomeService.prototype.getHomeContent = function () {
+        return this._http.get('api/dataservice/home')
             .map(function (res) { return res.json(); });
     };
     return HomeService;

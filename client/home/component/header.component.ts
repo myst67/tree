@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent{
     
+    logo : String= "https://www.recsite.com/images/jobsite_logo2.gif";
+
     ngOnInit(){
         
     }

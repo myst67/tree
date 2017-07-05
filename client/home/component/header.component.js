@@ -9,6 +9,7 @@ var core_1 = require("@angular/core");
 // declare var $:JQueryStatic;
 var HeaderComponent = (function () {
     function HeaderComponent() {
+        this.logo = "https://www.recsite.com/images/jobsite_logo2.gif";
     }
     HeaderComponent.prototype.ngOnInit = function () {
     };
