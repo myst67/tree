@@ -1,0 +1,131 @@
+  Sudip Kr Chatterjee
+  Mobile: +91 7795392338
+  E-Mail: sudip.chatterjee.myst@gmail.com
+  Skype ID: myst.cs
+
+
+Having 4+ years of experience in Designing and Development of various e-Commerce based B2B and B2C Applications in Magento & Demandware. Currently working with MEAN Stack development for single page application in microservice architecture.
+
+WORK & EXPERIENCE
+Sapient Corporation working as a Associate Technology. (Dec 2015 to present)
+Echidna Inc worked as a software developer. (July 2014 to Nov 2015)
+BlueRose Technologies worked as a Software Engineer. (Mar 2012 to Aug 2013)
+
+TECHNICAL EXPERTISE
+
+Frontend: Angular 2, Typescript, JavaScript, Bootstrap 3, ISML, HTML 5
+Backend : PHP, Java, Node Js, Express Js, Demandware Script
+Database : Mongo DB, MySQL
+ORM : Mongoose, Magento ORM
+E-commerce platform: Magento EE, Magento CE, Magento 2 APIs, Demandware SG2, Mozu Enterprise, Opencart.
+Server : Apache , Nginx , AWS EC2
+Tortoise SVN, Git, Source Tree
+
+
+Current R&D
+Title: Single Page ecommerce application in MEAN Stack with Magento 2
+
+Technology Used: Angular 2, Node Js, Express Js, Mongo DB, Magento 2.1.4
+
+Client: Internal project of SapientNitro
+
+SVN: Git
+	
+	Role: Build Stories, Create JIRA Tasks, Deploy Functional area, Handle PR 	Request, Error Handling, Restructure code base
+
+Title: Single Page ecommerce application in MEAN Stack with Oracle ATG
+
+Technology Used: Angular 2, Node Js, Express Js, Mongo DB, Oracle ATG
+
+Client: Rogers
+
+SVN: Git
+	
+Role: Build Stories, Architect the Frontend development, Deploy Functional area in angular 2, Build, Error Handling etc.
+
+
+DEMANDWARE
+
+Title: B2C ecommerce Application 
+
+Technology Used: Demandware
+
+Server: Apache
+
+Client: Abercrombie & Fitch
+
+Role: Functional development
+
+Url: https://www.abercrombie.cn/ 
+
+Team Member: 19
+
+Project Duration: 500 Hours (5 Months)
+
+Description: We are developing abercrombie – Kids & hollisterco ecommerce devlopment for China, Japan, Taiwan, Singapore & Hong kong locale. 
+
+
+MAGENTO
+
+Title: B2B andB2C eCommerce application  
+
+Technology Used: Magento Enterprise 1.14, PHP 5.3, MySql 5.5, Microsoft GP ERP.
+
+Server: Nginx, CentOS 6.2
+
+Role: Functional development
+
+Team Member: 10
+
+Project Duration : 2091 Hours (11 Months)
+
+Client: Ergodyne
+
+Url: https://www.ergodyne.com/ 
+
+Description: This is B2B and B2C eCommerce based application for Industrial equipment. I had done custom development like checkout process, multiple whishlist, Digital Asset Library, B2B trading, ePay and PayFabric payment getway , connection bridge between GP ERP and Magento.
+
+Others Magento Ecommerce based websites: 
+http://www.thebrewshop.com.au/
+http://www.bhaap.com/
+http://expresscarpet.co.uk/
+http://www.golfmagazijn.nl/
+http://www.rangmohe.com/
+http://www.mynesthome.com/
+http://www.irishbutterfly.com/
+
+Magento Modules: 
+Multiple wishlist
+Magento Wallet
+B2B Quotation
+Price Calculator
+Iframe based payment getway (Payzippy)
+Magento wordpress integrator
+ePay and PayFabric Payment getway
+
+EDUCATIONAL QUALIFICATION
+B.Tech (Computer Science & Engineering) from Bengal College of Engineering and Technology West Bengal University of Technology with aggregate DGPA 7.5 in 2011.	
+12th from WBCHSE, West-Bengal with in 2007.
+10th from WBBSE, West-Bengal with in 2005.
+ 
+CERTIFICATION
+Magento Developer certification with 94.3% on 2015. (http://www.magentocommerce.com/certification/directory/dev/1486063/)
+EXTRA CURRICULAR ACTIVITIES
+
+Playing Soccer. 
+Social Networking like Facebook, LinkedIn.
+PC games.
+Play Guitar.
+
+PERSONAL DETAILS
+Date of Birth			17-03-1989
+Sex				Male
+Marital Status			Single
+Languages known		English, Hindi, Bengali
+Address			KR Puram Area, Bangalore - INDIA
+
+DECLERATION 		
+I, hereby solemnly declare that all the information made above are true and correct to the best of my knowledge and belief.
+
+
+Date:                                         		                   	----------------------------								               (Sudip Chatterjee)																							

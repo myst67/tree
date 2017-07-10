@@ -19,14 +19,21 @@ var CreateformService = (function () {
         console.log('inside service');
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('formLabel', createjobForm.label);
-        headers.append('formDes', createjobForm.job_description);
-        headers.append('formCompany', createjobForm.company);
-        headers.append('formLocation', createjobForm.location);
-        headers.append('formRecruiterName', createjobForm.recruiter_name);
-        headers.append('formRecruiterPh', createjobForm.recruiter_ph);
-        return this._http.get('api/dataservice/createjob', { headers: headers })
+        return this._http.post('api/dataservice/createjob', JSON.stringify(createjobForm), { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CreateformService.prototype.getJobDetails = function (jobId) {
+        console.log('inside service');
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('jobId', jobId);
+        return this._http.get('api/dataservice/viewjob', { headers: headers })
             .map(function (res) { return res.json(); });
+    };
+    CreateformService.prototype.applyJob = function (jobId) {
+        var applyJobData = { jobId: jobId, token: localStorage.getItem('customer_token') };
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this._http.post('api/dataservice/applyJob', JSON.stringify(applyJobData), { headers: headers }).map(function (res) { return res.json(); });
     };
     return CreateformService;
 }());

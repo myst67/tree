@@ -145,20 +145,28 @@ body {
 	<div class="row">
 		<section class="content">
             <h1>Job List</h1>
-			<div class="col-md-12">
+			<div *ngIf="emptyJobList"> There is no Current Job, Please create some jobs form top-left corner.</div>
+			<div *ngIf="!emptyJobList" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="table-container">
 							<table class="table table-filter">
+								<thead>
+									<th>Job Id</th>
+									<th></th>
+									<th>
+										Job Description
+									</th>
+								</thead>
 								<tbody>
                                     <tr data-status="pagado" *ngFor="let job of joblist">
                                         <td>
-                                            {{job}}
+                                            {{job.id}}
 										</td>
 										<td>
 											
 										</td>
-                                        <td style="">
+                                        <td>
 											<div class="media">
 												<a href="#" class="pull-left">
 													<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
@@ -167,9 +175,11 @@ body {
                                                     <span class="media-meta pull-right">{{job.craete_date}}</span>
 													<h4 class="title">
 														{{job.label}}
-                                                        <span class="pull-right pagado"><a href="#"><span class="fa fa-eye">View</span></a></span>
+                                                        <span class="pull-right pagado"><a [routerLink]="'/viewjob/id/'+job.id"><span class="fa fa-eye">View</span></a></span>
 													</h4>
-													<p class="summary">Ut enim ad minim veniam, quis nostrud exercitation...</p>
+													<p class="summary">
+														{{cutString(job.description)}}
+													</p>
 												</div>
 											</div>
 										</td>

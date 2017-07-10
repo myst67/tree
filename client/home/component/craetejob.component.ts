@@ -16,6 +16,7 @@ export class CraetejobComponent{
     createjob: FormGroup;
     msg : String ;
     subscription: Subscription;
+    anyError : String;
     ngOnInit() 
     {
        this.createJobForm();
@@ -44,21 +45,25 @@ export class CraetejobComponent{
     }
 
 
-    submitJobForm(createjobForm: FormGroup):void 
+    submitJobForm(createjobForm: FormGroup) 
     {
         if (createjobForm.valid)
         {
-            console.log(createjobForm.value);
+            // console.log(createjobForm.value);
+            // return false;
+
             this.subscription = this._createformservice.saveJob(createjobForm.value)
                 .subscribe((response:any) =>
                 {
-                   console.log('res from api ==== ')
-                  console.log(response);
-                  this.msg = 'Thank you for craeting Job. Job id is:'+response;
+                    if(response.success === true)
+                    {
+                         this.msg = 'Thank you for craeting Job. Your Job id is:'+response.msg;
+                    }else{
+                        this.anyError = response.msg;
+                    }
                 })
-        }else
-        {
-          this.msg = "Form Is Not Valid";
+        }else{
+          this.anyError = "Form Is Not Valid";
         }
         this.createJobForm();
     }

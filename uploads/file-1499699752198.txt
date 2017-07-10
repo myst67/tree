@@ -1,0 +1,4 @@
+[ResponseResult]
+ResultCode=0
+[Application]
+version=7.4.0.165

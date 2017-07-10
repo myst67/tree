@@ -1,7 +1,8 @@
 <div class="contanier">
-    <div class="address-form row col-md-12">
+<div class="address-form row col-md-10" style="margin: 0 auto;">
         <h2>Craete Job</h2>
-        <div class="error">{{msg}}</div>
+        <div class="success" *ngIf="msg">{{msg}}</div>
+        <div class="error" *ngIf="anyError">{{anyError}}</div>
         <form novalidate #createjobForm="ngForm" (ngSubmit)="submitJobForm(createjobForm)" [formGroup]="createjob">
             <div class="form-group ">
                 <div class="row">
@@ -49,7 +50,8 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" data-dismiss="modal" class="btn btn-primary" id="add">Submit</button>
+            <!--<button type="submit" data-dismiss="modal" class="btn btn-primary" id="add">Submit</button>-->
+            <button class="btn btn-primary"><i class="fa fa-sign-in"></i> submit</button>
         </form>
         
     </div>

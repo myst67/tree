@@ -19,11 +19,19 @@ var HomeComponent = (function () {
         var _this = this;
         this._homeservice.getHomeContent()
             .subscribe(function (response) {
-            console.log('res from home api ==== ');
-            _this.joblist = response;
-            console.log(_this.joblist);
-            // this.msg = 'Thank you for craeting Job. Job id is:'+response;
+            _this.joblist = response.msg;
+            if (_this.joblist.length < 1) {
+                _this.emptyJobList = true;
+            }
+            else {
+                _this.emptyJobList = false;
+            }
         });
+    };
+    HomeComponent.prototype.cutString = function (str) {
+        length = 50;
+        str = str.length > length ? str.substring(0, length - 3) + "..." : str;
+        return str;
     };
     return HomeComponent;
 }());

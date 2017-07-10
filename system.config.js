@@ -13,7 +13,9 @@
      "lodash":                     'node_modules/lodash/lodash.js',
     'nouislider':                 'node_modules/nouislider',
     'ng2-nouislider':             'node_modules/ng2-nouislider',
-    'angular2-cookie':             'node_modules/angular2-cookie',
+    'ng2-file-upload':            'node_modules/ng2-file-upload',
+    'angular2-cookie':            'node_modules/angular2-cookie',
+    'angular2-auth':              'node_modules/angular2-auth',
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -28,7 +30,8 @@
     "lodash":                     { defaultExtension: 'js' },
     'nouislider':                 { main: 'distribute/nouislider.js', defaultExtension: 'js' },
     'ng2-nouislider':             { main: 'src/nouislider.js', defaultExtension: 'js' },
-    'angular2-cookie':             { main: 'core.js', defaultExtension: 'js' }
+    'angular2-cookie':            { main: 'core.js', defaultExtension: 'js' },
+    'ng2-file-upload':            { main: 'ng2-file-upload.js', defaultExtension: 'js' }
   };
 
   var ngPackageNames = [
