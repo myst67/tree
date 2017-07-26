@@ -7,14 +7,6 @@ import { HttpModule } from '@angular/http';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HomeComponent } from './home/component/home.component';
 import { HeaderComponent } from './home/component/header.component';
-import { CraetejobComponent }     from './home/component/craetejob.component';
-import { RegistrationComponent }     from './home/component/registration.component';
-import { AccountComponent }     from './home/component/account.component';
-import { ViewjobComponent }     from './home/component/viewjob.component';
-import { FileUploadModule } from 'ng2-file-upload';
-import { AuthGuard } from './home/component/guards/auth.guard';
-
-
 
 import { DropdownModule } from "ng2-dropdown";
 
@@ -23,7 +15,6 @@ const app_modules: any = [
   FormsModule,
   ReactiveFormsModule,
   HttpModule,
-  FileUploadModule,
   app_routing
 ];
 
@@ -34,14 +25,9 @@ const app_modules: any = [
   declarations: [
     AppComponent,
     HomeComponent,
-    CraetejobComponent,
     HeaderComponent,
-    RegistrationComponent,
-    AccountComponent,
-    ViewjobComponent
   ],
   providers: [
-    AuthGuard,
     { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   bootstrap: [AppComponent]

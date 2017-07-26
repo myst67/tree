@@ -25,6 +25,7 @@
     "@angular/router": "3.2.0",
     "@angular/upgrade": "2.2.0",
     "@types/lodash": "^4.14.47",
+    "@types/underscore": "^1.8.1",
     "angular2-auth": "^0.1.7",
     "angular2-cookie": "^1.2.6",
     "bcrypt": "^1.0.2",
@@ -51,6 +52,7 @@
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.40",
+    "underscore": "^1.8.3",
     "winston": "^2.3.0",
     "zone.js": "^0.6.26"
   },

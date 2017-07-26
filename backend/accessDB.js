@@ -1,23 +1,14 @@
-// Module dependencies
+
 var util = require('util'),
     mongoose = require('mongoose'),
-    filesystem = require('fs'),
     Schema = mongoose.Schema,
     dbConfig = require('./configLoader').databaseConfig,
-    bcrypt = require('bcrypt'),
-    jobdetails = require('../server/models/jobdetails.schema'),
-    customerReg = require('../server/models/customerRegistration.schema'),
-    uploadDocument = require('../server/models/uploadDocument.schema'),
-    applyJob = require('../server/models/applyJob.schema'),
-    // customerLogin = require('../server/models/customerLogin.schema'),
-   //getJobList = require('../server/models/joblist.schema'),
+    treeDetails = require('../server/models/objectDetails.schema'),
     connectionString = 'mongodb://' + dbConfig.host + '/' + dbConfig.database,
     connection = null;
 var SALT_WORK_FACTOR = 10;  
 
-// connect to database
 module.exports = {
-    // initialize DB
     startup: function(callback) {
         if (!mongoose.connection.readyState) {
             mongoose.connect(connectionString);
@@ -29,7 +20,6 @@ module.exports = {
         }
     },
 
-    // disconnect from database
     close: function() {
         connection.close(function() {
             console.log('Mongoose default connection disconnected through app termination');
@@ -37,269 +27,118 @@ module.exports = {
         });
     },
 
-    insertJobDetails: function(jobData, callback) {
+    insertObjectData: function(insertObjectDetails, callback) {
 
-        var datetime = new Date().toLocaleDateString();
-       
-        console.log('beofre delare scghema ==== ');
-        console.log(jobData);
-
-        jobdetailsSchema = new jobdetails({
-            id: new Date().getTime().toString().substr(-8), 
-            label: jobData.label,
-            description: jobData.job_description, 
-            company: jobData.company,
-            location: jobData.location,
-            recruiter_name : jobData.recruiter_name,
-            recruiter_ph: jobData.recruiter_ph,
-            craete_date: datetime
+        var treeName = insertObjectDetails.treename;
+        delete insertObjectDetails.treename;
+        objectDetailsSchema = new treeDetails({
+            treeId: new Date().getTime().toString().substr(-8),
+            treeName : treeName,
+            data : insertObjectDetails
         });
-        jobdetailsSchema.save(function(err,data) {
-            if (err) {
-                 callback(err, null);
-            } else{
-                console.log('else fn=====');
-                console.log(data);
 
-                callback(null, data.id);
+        objectDetailsSchema.save(function(err,data) {
+            if (err) {
+                callback(err, null);
+            } else{
+                callback(null, data.treeId);
             }
         });
     },
 
-    applyJob: function(jobDetails, callback) {
+     updateObjectData: function(updateObjectDetails, callback) {
 
-        var datetime = new Date().toLocaleDateString();
-        var err = '';
-        console.log('beofre delare scghema ==== ');
-
-
-        applyJob.find({customer_id: jobDetails.token},function(err, jobData) {
+        treeDetails.find({'treeId': updateObjectDetails.treeid}, {}, function(err, tree) {
             if (err) {
-                console.log("Error fetching job details by customer: " + err);
-                callback(null, jobData);
+                console.log("Error getting cms: " + err);
             } else {
-
-                console.log('old job data====');
-                console.log(jobData);
-                console.log('new job data====');
-                console.log(jobDetails.jobid);
                 
-                for(var i=0;i<jobData.length;i++)
-                {
-                    if(jobData[i].job_id == jobDetails.jobid)
-                    {
-                         err = 'You already apply for this job before..';
-                         callback(err, null);
-                         return;
-                    }
+                var treeNamea = tree[0].treeName;
+                var updateObject = Object;
+                var treeData = tree[0].data;
+                var highest = null;
+                var tmpId;
+                var tmpValue;
+                var updatedId;
+                var updatedValue;
+                var updatedDepth;
+                var hash = {};
+                var maxDepth = 0;
+
+                for (var i=treeData.length-1; i>=0; i--) {
+                    tmpId = treeData[i].id;
+                    if (tmpId > highest) highest = tmpId;
                 }
 
-                applyJobSchema = new applyJob({
-                    id: new Date().getTime().toString(), 
-                    customer_id: jobDetails.token,
-                    job_id: jobDetails.jobid, 
-                    craete_date: datetime
-                });
-                applyJobSchema.save(function(err,data) {
-                    if (err) {
-                        console.log('Error while saving jobdetailsSchema: ' + err);
-                        callback(err, null);
-                    } else{
-                        callback(err, applyJobSchema.id);
+                if(updateObjectDetails.value > highest)
+                {
+                    err = "input value should not be greater then id !!";
+                    callback(err, null);
+                }else{
+                    
+                    for(var i=0;i<treeData.length;i++)
+                    {
+                        if(treeData[i].value == updateObjectDetails.value)
+                        {
+                            updatedId = highest+1;
+                            updatedValue = updateObjectDetails.value;
+                            updatedDepth = treeData[i].depth;
+                            updateObject = {'value':updatedValue, 'depth':updatedDepth, 'id':updatedId,};
+                            treeData.push(updateObject);
+                            break;
+                        }
+
+                        if(treeData[i].id == updateObjectDetails.value){
+                            updatedId = highest+1;
+                            updatedValue = updateObjectDetails.value;
+                            updatedDepth = treeData[i].depth+1;
+                            updateObject = {'value':updatedValue, 'depth':updatedDepth, 'id':updatedId,};
+                            treeData.push(updateObject);
+                            break;
+                        }
                     }
-                });
-            }
 
-        });
+                    
 
-        
-        
-    },
+                    
+                    for(var j=0;j<treeData.length;j++)
+                    {
+                        if(!hash[treeData[j]['depth']])
+                        {
+                            hash[treeData[j]['depth']] = [];
+                        }
 
-    uploadDocument: function(docData, callback) {
+                        if(treeData[j]['depth'] > maxDepth)
+                        {
+                            maxDepth ++;
+                        } 
 
-        var datetime = new Date().toLocaleDateString();
-        uploadDocumentSchema = new uploadDocument({
-            customer_id: docData.token, 
-            filename: docData.filename,
-            craete_date: datetime
-        });
-
-        uploadDocument.findOne({customer_id: docData.token},function(err,docDbData) {
-            if(docDbData == null)
-            {
-                uploadDocumentSchema.save(function(err,data) {
-                    if (err) {
-                        callback(err, null);
-                    } else{
-                        callback(null, data.filename);
+                        hash[treeData[j]['depth']].push(treeData[j]);
                     }
-                });
-            }else{
-                var filePath = 'uploads/'+docDbData.filename; 
-                filesystem.unlinkSync(filePath);
 
-                docDbData.filename = docData.filename;
-                docDbData.craete_date = datetime;
-                docDbData.save();
+                    objectDetailsSchema = new treeDetails({
+                        treeId: updateObjectDetails.treeid,
+                        treeName : treeNamea,
+                        data : hash
+                    });
 
-                callback(null, docData.filename);
-            }
-        });
-    },
+                    var finalData = {"maxDepth":maxDepth,"updatedNodeData":objectDetailsSchema};
 
+                    treeDetails.findOne({treeId: updateObjectDetails.treeid}, function (err, tree_data) {
+                        tree_data.treeId = updateObjectDetails.treeid;
+                        tree_data.treeName  = treeNamea;
+                        tree_data.data = treeData;
 
-    haveDocument: function(token, callback) {
-        uploadDocument.findOne({customer_id: token},function(err,docDbData) {
-            var err = '';
-            if(docDbData == null)
-            {
-                err = 'user dosenot have any document, please upload your resume before applying!!';
-                callback(err, null);
-            }else{
-                callback(null, docDbData.filename);
-            }
-        });
-    },
-
-
-    customerRegistrationDetails: function(registrationData, callback) {
-
-        console.log('inside mongo db regData ====');
-       console.log(registrationData);
-      // return;
-       // callback(null, null);
-        
-        var datetime = new Date().toLocaleDateString();
-        var error = String;
-        console.log('beofre delare scghema ==== ');
-        customerSchema = new customerReg({
-            id:new Date().getTime().toString(),
-            firstname: registrationData.firstname,
-            lastname: registrationData.lastname, 
-            email: registrationData.email, 
-            dob: registrationData.dob, 
-            location: registrationData.location,
-            phone : registrationData.phone,
-            password: registrationData.passwords.password,
-            craete_date: datetime
-        });
-        /* customerSchema.save(function(err,data) {
-            if (err) {
-                console.log('Error while saving jobdetailsSchema: ' + err);
-            } else{
-                console.log('after save inmongo==');
-                console.log(data);
-            }
-        });
-        callback(null, customerSchema.id);
-        */
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-            if (err) 
-            {
-                console.log('error 1===' + err);
-                callback(err, null);
-            }else{
-                bcrypt.hash(customerSchema.password, salt, function (err, hash) {
-                    if (err) {
-                        callback(err, null);
-                    }else{
-                        this.customerSchema.password = hash;
-                        customerSchema.save(function(err,next) {
-                            if (err){
-                                console.log('Error while saving jobdetailsSchema: ' + err); throw err; 
+                        tree_data.save(function (err) {
+                            if(err) {
                                 callback(err, null);
                             }else{
-                                callback(null, customerSchema.id);
+                                callback(null, finalData);
                             }
                         });
-                    }
-                });
-            }
-        });
-        
-         
-    },
-
-    customerLoginDetails: function(loginData, callback) {
-        var error = '';
-        var response = '11';
-        customerReg.findOne({email: loginData.email},function(err, loginDbData) {
-            if(loginDbData == null)
-            {
-                err = 'cutomer email not exist in db';
-                callback(err,null);
-            }else{
-                var saltPassword = loginDbData.password;
-                bcrypt.compare(loginData.password, saltPassword, function(err, res) 
-                {
-                    if (err) {
-                        console.log('Error while fetching compare password: ' + err); throw err; 
-                        callback(err,null);
-                    }
-                    if(res===true)
-                    {
-                        callback(null,loginDbData.id);
-                    }else{
-                        err = 'password id not matchinig!';
-                        callback(err,null);
-                    }
-                    
-                });
-            }
-        });
-    },
-
-    getJobList: function(err, callback) {
-        jobdetails.find({},function(err, jobData) {
-            if (err) {
-                console.log("Error fething Menu: " + err);
-                callback(err,null);
-            } else {
-                callback(null, jobData);
-            }
-
-        });
-    },
-
-    getJob: function(jobid, callback) {
-        console.log('inside access db====');
-        console.log(jobid);
-
-        jobdetails.find({id: jobid},function(err, jobData) {
-            if (err) {
-                console.log("Error fething Menu: " + err);
-                callback(err,null);
-            } else {
-                callback(null, jobData);
-            }
-
-        });
-    },
-
-
-    customerAccountDetails: function(token_id, callback) {
-        customerReg.findOne({id: token_id},function(err, accountData) {
-            if(accountData == null)
-            {
-                err = 'Cannot find account from customer id';
-                callback(err,null);
-            }else{
-                console.log('inside accessdb ====');
-                console.log(accountData);
-                var accountInfo = {
-                    firstname: accountData.firstname,
-                    lastname: accountData.lastname,
-                    email: accountData.email,
-                    dob: accountData.dob,
-                    location: accountData.location,
-                    phone: accountData.phone,
-                    craete_date: accountData.craete_date
+                    });
                 }
-                callback(null,accountInfo);
             }
         });
-    },
-
-
+    }
 }

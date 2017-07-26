@@ -15,9 +15,18 @@ var HomeService = (function () {
     function HomeService(_http) {
         this._http = _http;
     }
-    HomeService.prototype.getHomeContent = function () {
-        return this._http.get('api/dataservice/home')
-            .map(function (res) { return res.json(); });
+    HomeService.prototype.getHomeContent = function (currentObject) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this._http.post('api/dataservice/home', JSON.stringify(currentObject), { headers: headers }).map(function (res) { return res.json(); });
+    };
+    HomeService.prototype.updateHomeContent = function (currentnodeValue, treeId) {
+        var conentvalue = currentnodeValue.toString();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('value', conentvalue);
+        headers.append('treeId', treeId);
+        return this._http.get('api/dataservice/updateHome', { headers: headers }).map(function (res) { return res.json(); });
     };
     return HomeService;
 }());

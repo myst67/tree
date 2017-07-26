@@ -1,9 +1,9 @@
 {
-  "name": "mean-magento",
-  "description": "Mean stack with Magento",
+  "name": "Tree",
+  "description": "Tree Structure",
   "main": "server.js",
   "authors": [
-    "Sudip Chatterjee <schatterjee4@sapient.com>"
+    "Sudip Chatterjee <sudipkrchatterjee@gmail.com>"
   ],
   "license": "ISC",
   "homepage": "",
