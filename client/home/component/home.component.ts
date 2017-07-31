@@ -10,27 +10,17 @@ import { HomeService } from '../service/home.service';
 export class HomeComponent{
     
     treenamea = '';
-    // currentNodeId = 1;
     currentnodeValue = 0;
-    currentDepth = 1;
     treeId : any;
     currentObject : Object;
-    updatedObject : any;
-    maxDepth : any;
+    updatedObject : Object;
+    passObject : Object;
     maxDepthArray :Array<any>;
-    dynamicWidth : any;
     isDisabled : Boolean;
 
 
     constructor( private _homeservice: HomeService) {
-        this.currentObject = [{
-            "depth": this.currentDepth,
-            "items":[{
-                    "id": 1,
-                    "value": 0
-                }
-                ]
-        }]
+        this.currentObject = {"items":[{"id": 1,"value": 0,"depth": 1}]}
     }
 
     createTree(treename:string)
@@ -38,13 +28,13 @@ export class HomeComponent{
        this.treenamea = treename;
        if(this.treenamea)
        {
-           this.currentObject[0]['treename'] = this.treenamea;
+           this.currentObject['treename'] = this.treenamea;
            this._homeservice.getHomeContent(this.currentObject).subscribe((response:any) =>
             {
                 if(response.success === true)
                 {
                     this.isDisabled = true;
-                    this.currentObject[0]['treeId'] = response.msg;
+                    this.currentObject['treeId'] = response.msg;
                     this.treeId = response.msg;
                 }else{
                     alert(response.error);
@@ -59,26 +49,20 @@ export class HomeComponent{
         this.currentnodeValue = value;
         if(this.currentnodeValue && this.currentObject)
         {
-            this._homeservice.updateHomeContent(this.currentnodeValue,this.treeId).subscribe((response:any) =>
+            this.passObject = {"id":this.treeId,"value":this.currentnodeValue};
+            this._homeservice.updateHomeContent(this.passObject).subscribe((response:any) =>
             {
+                
                 if(response.success === true)
                 {
-                    this.updatedObject = response.msg.updatedNodeData.data;
-                    this.maxDepth = response.msg.maxDepth;
-                    this.maxDepthArray = new Array(this.maxDepth);
+                    this.updatedObject = response.msg.newTreeData;
+                    this.maxDepthArray = new Array(response.msg.maxdepth);
 
-                    this.updatedObject.sort((a:any,b:any)=>{
-                        if(a.value < b.value) return -1;
-                        else if(a.value > b.value) return 1;
-                        else return 0;
-                    })
-
-                    for(let i=1;i<=this.maxDepth;i++)
+                    for(let i=1;i<=response.msg.maxdepth;i++)
                     {
-                        this.dynamicWidth = 100/this.updatedObject[0][i].length;
-                        for(let j=0;j<this.updatedObject[0][i].length;j++)
+                        for(let j=0;j<this.updatedObject[i].length;j++)
                         {
-                            this.updatedObject[0][i].width = this.dynamicWidth;
+                            this.updatedObject[i].width = 100/this.updatedObject[i].length;
                         }
                     }
                 }else{

@@ -6,7 +6,7 @@ var express = require('express'),
     DB = require('./backend/accessDB'),
     app = express();
 
-var port = process.env.PORT || 3001;
+var port = process.env.PORT || 3000;
 
 app.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -30,7 +30,7 @@ app.get('/', routes.index);
 
 var baseUrl = '/api/dataservice/';
 app.post(baseUrl + 'home', homeApi.craeteTree);
-app.get(baseUrl + 'updateHome', homeApi.updateTree);
+app.post(baseUrl + 'updateHome', homeApi.updateTree);
 
 DB.startup();
 

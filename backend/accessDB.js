@@ -8,6 +8,65 @@ var util = require('util'),
     connection = null;
 var SALT_WORK_FACTOR = 10;  
 
+function reuseFunction(treeData,currentNodeValue,groupedData)
+{
+    var highest = null;
+    var result = {};
+    var flagFindNode = false;
+    var newObject = {};
+    var returnObject = {};
+    var maxDepth = 1;
+    if(groupedData === false)
+    {
+        for (var i=treeData.length-1; i>=0; i--) 
+        {
+            tmpId = treeData[i].id;
+            if (tmpId > highest) highest = tmpId;
+
+            if(treeData[i].value == currentNodeValue && flagFindNode===false)
+            {
+                flagFindNode = true;
+                updateObject = {'value':currentNodeValue, 'depth':treeData[i].depth, 'id':highest+1};
+                treeData.push(updateObject);
+            }else if(treeData[i].id == currentNodeValue && flagFindNode===false)
+            {
+                flagFindNode = true;
+                updateObject = {'value':currentNodeValue, 'depth':treeData[i].depth+1, 'id':highest+1};
+                treeData.push(updateObject);
+            }
+
+        }
+    }else{
+
+        for(var i=0;i<treeData.length;i++)
+        {
+            if(!newObject[treeData[i]['depth']])
+            {
+                newObject[treeData[i]['depth']] = [];
+            }
+
+            if(treeData[i]['depth'] > maxDepth)
+            {
+                maxDepth ++;
+            } 
+
+            newObject[treeData[i]['depth']].push(treeData[i]);
+        }
+    }
+    
+
+    if(currentNodeValue > highest)
+    {
+        returnObject = {"redirect":true};
+    }else if(groupedData === false){
+        returnObject = {"redirect":false,"newTreeData":treeData};
+    }else{
+        returnObject = {"maxdepth":maxDepth,"newTreeData":newObject};
+    }
+    
+    return returnObject;
+};
+
 module.exports = {
     startup: function(callback) {
         if (!mongoose.connection.readyState) {
@@ -27,14 +86,15 @@ module.exports = {
         });
     },
 
-    insertObjectData: function(insertObjectDetails, callback) {
+    insertObjectData: function(objectDetails, callback) {
 
-        var treeName = insertObjectDetails.treename;
-        delete insertObjectDetails.treename;
+       var treeName = objectDetails.treename;
+       delete objectDetails.treename;
+
         objectDetailsSchema = new treeDetails({
             treeId: new Date().getTime().toString().substr(-8),
             treeName : treeName,
-            data : insertObjectDetails
+            data : objectDetails.items
         });
 
         objectDetailsSchema.save(function(err,data) {
@@ -48,92 +108,31 @@ module.exports = {
 
      updateObjectData: function(updateObjectDetails, callback) {
 
-        treeDetails.find({'treeId': updateObjectDetails.treeid}, {}, function(err, tree) {
+        treeDetails.findOne({'treeId': updateObjectDetails.id}, {}, function(err, tree) {
             if (err) {
-                console.log("Error getting cms: " + err);
+                console.log("Error getting object details: " + err);
             } else {
                 
-                var treeNamea = tree[0].treeName;
-                var updateObject = Object;
-                var treeData = tree[0].data;
-                var highest = null;
-                var tmpId;
-                var tmpValue;
-                var updatedId;
-                var updatedValue;
-                var updatedDepth;
-                var hash = {};
-                var maxDepth = 0;
-
-                for (var i=treeData.length-1; i>=0; i--) {
-                    tmpId = treeData[i].id;
-                    if (tmpId > highest) highest = tmpId;
-                }
-
-                if(updateObjectDetails.value > highest)
+                var result = reuseFunction(tree.data,updateObjectDetails.value,groupedData = false);
+                if(result.redirect === true)
                 {
                     err = "input value should not be greater then id !!";
                     callback(err, null);
                 }else{
-                    
-                    for(var i=0;i<treeData.length;i++)
-                    {
-                        if(treeData[i].value == updateObjectDetails.value)
-                        {
-                            updatedId = highest+1;
-                            updatedValue = updateObjectDetails.value;
-                            updatedDepth = treeData[i].depth;
-                            updateObject = {'value':updatedValue, 'depth':updatedDepth, 'id':updatedId,};
-                            treeData.push(updateObject);
-                            break;
-                        }
+                    var newTreeData = result.newTreeData;
 
-                        if(treeData[i].id == updateObjectDetails.value){
-                            updatedId = highest+1;
-                            updatedValue = updateObjectDetails.value;
-                            updatedDepth = treeData[i].depth+1;
-                            updateObject = {'value':updatedValue, 'depth':updatedDepth, 'id':updatedId,};
-                            treeData.push(updateObject);
-                            break;
-                        }
-                    }
-
-                    
-
-                    
-                    for(var j=0;j<treeData.length;j++)
-                    {
-                        if(!hash[treeData[j]['depth']])
-                        {
-                            hash[treeData[j]['depth']] = [];
-                        }
-
-                        if(treeData[j]['depth'] > maxDepth)
-                        {
-                            maxDepth ++;
-                        } 
-
-                        hash[treeData[j]['depth']].push(treeData[j]);
-                    }
-
-                    objectDetailsSchema = new treeDetails({
-                        treeId: updateObjectDetails.treeid,
-                        treeName : treeNamea,
-                        data : hash
-                    });
-
-                    var finalData = {"maxDepth":maxDepth,"updatedNodeData":objectDetailsSchema};
-
-                    treeDetails.findOne({treeId: updateObjectDetails.treeid}, function (err, tree_data) {
-                        tree_data.treeId = updateObjectDetails.treeid;
-                        tree_data.treeName  = treeNamea;
-                        tree_data.data = treeData;
+                    treeDetails.findOne({treeId: updateObjectDetails.id}, function (err, tree_data) {
+                        
+                        tree_data.treeId = updateObjectDetails.id;
+                        tree_data.treeName  = tree.treeName;
+                        tree_data.data = newTreeData;
 
                         tree_data.save(function (err) {
                             if(err) {
                                 callback(err, null);
                             }else{
-                                callback(null, finalData);
+                                var newResult = reuseFunction(tree.data=newTreeData,updateObjectDetails.value=false,groupedData = true);
+                                callback(null, newResult);
                             }
                         });
                     });

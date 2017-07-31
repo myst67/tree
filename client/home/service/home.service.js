@@ -20,13 +20,10 @@ var HomeService = (function () {
         headers.append('Content-Type', 'application/json');
         return this._http.post('api/dataservice/home', JSON.stringify(currentObject), { headers: headers }).map(function (res) { return res.json(); });
     };
-    HomeService.prototype.updateHomeContent = function (currentnodeValue, treeId) {
-        var conentvalue = currentnodeValue.toString();
+    HomeService.prototype.updateHomeContent = function (updatedObject) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('value', conentvalue);
-        headers.append('treeId', treeId);
-        return this._http.get('api/dataservice/updateHome', { headers: headers }).map(function (res) { return res.json(); });
+        return this._http.post('api/dataservice/updateHome', JSON.stringify(updatedObject), { headers: headers }).map(function (res) { return res.json(); });
     };
     return HomeService;
 }());

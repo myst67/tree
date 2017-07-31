@@ -18,13 +18,14 @@ export class HomeService{
 
     }
 
-    updateHomeContent(currentnodeValue:Number,treeId:string){
+    updateHomeContent(updatedObject:Object){
 
-        var conentvalue = currentnodeValue.toString();
         var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('value',conentvalue);
-        headers.append('treeId',treeId)
-        return this._http.get('api/dataservice/updateHome',{headers:headers}).map(res=>res.json());
+        headers.append('Content-Type','application/json')
+        return this._http.post(
+                        'api/dataservice/updateHome',
+                        JSON.stringify(updatedObject),
+                        {headers:headers}
+                        ).map(res=>res.json());
     }
 }

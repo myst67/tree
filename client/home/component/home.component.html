@@ -12,7 +12,7 @@
 
     <div class="tree-data" style="margin-top: 21px;border: 1px solid;float: left;position: relative;width: 100%;">
         <div class="tree-table-parent" *ngFor="let depth of maxDepthArray; let i = index" style="text-align: center; width: 100%;float: left;margin: 0 auto;">
-            <div class="tree-table-child" *ngFor="let gp of updatedObject[0][i+1];" [style.width.%]="updatedObject[0][i+1].width" style="float: left;">
+            <div class="tree-table-child" *ngFor="let gp of updatedObject[i+1];" [style.width.%]="updatedObject[i+1].width" style="float: left;">
                 ID:{{gp.id}}[{{gp.value}}]
             </div>
         </div>
